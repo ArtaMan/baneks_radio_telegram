@@ -5,6 +5,7 @@ import vk
 import config2
 from random import choice
 from voice import say, recognize
+import os
 
 bot = telebot.TeleBot(config.token)
 
@@ -20,9 +21,12 @@ def say_m(message):
         print('sending')
         bot.send_message(message.chat.id, 'sending')
         random_record = choice(records['items'])
-        audio = open(say(random_record['text']), 'rb')
+        file = say(random_record['text'])
+        audio = open(file, 'rb')
         bot.send_audio(message.chat.id, audio)
         print('done')
+        path = os.path.join(os.path.abspath(os.path.dirname(__file__)), file)
+        os.remove(path)
     except:
         pass
 
