@@ -5,6 +5,7 @@ import urllib.parse
 import uuid
 import time
 import ssl
+import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -16,7 +17,7 @@ PCM_CHUNK = 1024
 THRESHOLD_AFTER_ACTIVATION = 200
 THRESHOLD = 200
 
-KEY = "b7970415-7851-4efc-a7f9-e7a60cbdfd53"
+KEY = config.token_yandex
 
 launch_time = time.time()
 
@@ -94,7 +95,7 @@ def record_to_text(data, request_id=uuid.uuid4().hex, topic='notes', lang='ru-RU
 
 def text_to_record(text, speaker='jane', emotion='neutral', speed=1.0):
     log("Преобразование текста в речь")
-    filename = str(uuid.uuid4()) + '.mp3'
+    filename = 'anek.mp3'
     url = 'https://tts.voicetech.yandex.net/generate?text={text}&format=mp3&lang=ru-RU&speaker=jane&key={key}&speaker={speaker}&emotion={emotion}&speed={speed}'.format(
         text=urllib.parse.quote(text),
         key=KEY, speaker=speaker, emotion=emotion, speed=speed)

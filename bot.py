@@ -2,14 +2,15 @@ import telebot
 import config
 import requests
 import vk
-import config2
 from random import choice
 from voice import say, recognize
 import os
+import time
+import aneks
 
-bot = telebot.TeleBot(config.token)
+bot = telebot.TeleBot(config.token_telegram)
 
-session = vk.Session(access_token=config2.token)
+session = vk.Session(access_token=config.token_vk)
 vk_api = vk.API(session)
 
 @bot.message_handler(commands=['say'])
@@ -38,6 +39,28 @@ def help(message):
 def start(message):
     bot.send_message(message.chat.id, '/say - рандомный (почти) анек голосом')
 
+@bot.message_handler(commands=['upload'])
+def upload(message):
+    try:
+        n = int(message.text[8:])
+    except:
+        bot.send_message(message.chat.id, 'enter number')
+        return
+    anekdots = aneks.get(n)
+
+    for i in range(len(anekdots)):
+        try:
+            files = open('ids.txt', 'a')
+            file = say(anekdots[i])
+            audio = open(file, 'rb')
+            msg = bot.send_audio(message.chat.id, audio)
+            print(msg.audio.file_id, file=files)
+            files.close()
+            path = os.path.join(os.path.abspath(os.path.dirname(__file__)), file)
+            os.remove(path)
+            time.sleep(1)
+        except:
+            print('SOME STRANGE ERROR', i)
 
 if __name__ == '__main__':
     bot.polling(none_stop=True)
