@@ -17,8 +17,6 @@ PCM_CHUNK = 1024
 THRESHOLD_AFTER_ACTIVATION = 200
 THRESHOLD = 200
 
-KEY = config.token_yandex
-
 launch_time = time.time()
 
 
@@ -38,8 +36,7 @@ def read_chunks(chunk_size, byte_data):
             break
 
 
-def record_to_text(data, request_id=uuid.uuid4().hex, topic='notes', lang='ru-RU',
-                   key=KEY):
+def record_to_text(data, key, request_id=uuid.uuid4().hex, topic='notes', lang='ru-RU'):
     log("Считывание блока байтов")
     chunks = read_chunks(CHUNK_SIZE, data)
 
@@ -93,7 +90,7 @@ def record_to_text(data, request_id=uuid.uuid4().hex, topic='notes', lang='ru-RU
         raise SpeechException('Unknown error.\nCode: %s\n\n%s' % (response.code, response.read()))
 
 
-def text_to_record(text, speaker='jane', emotion='neutral', speed=1.0):
+def text_to_record(text, KEY, speaker='jane', emotion='neutral', speed=1.0):
     log("Преобразование текста в речь")
     filename = 'anek.mp3'
     url = 'https://tts.voicetech.yandex.net/generate?text={text}&format=mp3&lang=ru-RU&speaker=jane&key={key}&speaker={speaker}&emotion={emotion}&speed={speed}'.format(

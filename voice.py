@@ -34,8 +34,8 @@ def play(data, framerate=44100):
     output_stream.write(data)
     output_stream.close()
 
-def say(text):
-    return speechkit.text_to_record(text)
+def say(text, token):
+    return speechkit.text_to_record(text, token)
 
 def recognize(seconds):
     return speechkit.record_to_text(record(seconds))
