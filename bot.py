@@ -57,14 +57,14 @@ def upload(message):
                 print(i, 'ready')
                 time.sleep(1)
             except:
-                print('SOME STRANGE ERROR', i)
+                bot.send_message(message.chat.id, 'SOME STRANGE ERROR' + str(i))
                 errors += 1
                 if errors >= 5:
-                    print('OOOps, lots of errors, using the next token and sleeping 20 secs')
+                    bot.send_message(message.chat.id, 'OOOps, lots of errors, using the next token and sleeping 20 secs')
                     if number >= len(config.token_yandex):
-                        print('no more tokens((')
+                        bot.send_message(message.chat.id, 'no more tokens((')
                         files.close()
-                        exit()
+                        return
                     number += 1
                     time.sleep(20)
     else:
